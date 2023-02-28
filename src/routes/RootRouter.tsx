@@ -4,26 +4,25 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ROUTES } from "./routes";
 import PrivateLayout from "../components/ui/PrivateLayout";
 import PublicLayout from "../components/ui/PublicLayout";
-import Home from "../pages/home/Home";
-import Signin from "../pages/signin/Signin";
-import Signup from "../pages/signup/Signup";
-import TasksLayout from "../pages/tasks/TasksLayout";
-import Tasks from "../pages/tasks/Tasks";
-import TaskDetail from "../pages/tasks/TaskDetail";
-import AddTask from "../pages/tasks/AddTask";
-import MembersLayout from "../pages/members/MembersLayout";
-import Members from "../pages/members/Members";
-import MemberDetail from "../pages/members/MemberDetail";
-import AddMember from "../pages/members/AddMember";
+import HomePrivate from "../features/home/HomePrivate";
+import HomePublic from "../features/home/HomePublic";
+import Signin from "../features/auth/Signin";
+import Signup from "../features/auth/Signup";
+import TasksLayout from "../features/tasks/TasksLayout";
+import Tasks from "../features/tasks/Tasks";
+import TaskDetail from "../features/tasks/TaskDetail";
+import AddTask from "../features/tasks/AddTask";
+import MembersLayout from "../features/members/MembersLayout";
+import Members from "../features/members/Members";
+import MemberDetail from "../features/members/MemberDetail";
+import AddMember from "../features/members/AddMember";
 
 function RootRouter() {
-  const isLoogedIn = true;
-
-  return isLoogedIn ? (
+  return (
     <Router>
       <Routes>
-        <Route path={ROUTES.HOME_PRIVATE} element={<PrivateLayout />}>
-          <Route index element={<Home />} />
+        <Route path={ROUTES.HOME} element={<PrivateLayout />}>
+          <Route index element={<HomePrivate />} />
           <Route path={ROUTES.TASKS} element={<TasksLayout />}>
             <Route index element={<Tasks />} />
             <Route path={ROUTES.ADD_TASK} element={<AddTask />} />
@@ -34,16 +33,11 @@ function RootRouter() {
             <Route path={ROUTES.ADD_MEMBER} element={<AddMember />} />
             <Route path=":id" element={<MemberDetail />} />
           </Route>
-        </Route>
-      </Routes>
-    </Router>
-  ) : (
-    <Router>
-      <Routes>
-        <Route path={ROUTES.HOME_PUBLIC} element={<PublicLayout />}>
-          <Route index element={<Signin />} />
-          <Route path={ROUTES.SIGNIN} element={<Signin />} />
-          <Route path={ROUTES.SIGNUP} element={<Signup />} />
+          <Route path={ROUTES.AUTH} element={<PublicLayout />}>
+            <Route index element={<HomePublic />} />
+            <Route path={ROUTES.SIGNIN} element={<Signin />} />
+            <Route path={ROUTES.SIGNUP} element={<Signup />} />
+          </Route>
         </Route>
       </Routes>
     </Router>
