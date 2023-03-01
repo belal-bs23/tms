@@ -132,7 +132,6 @@ export const authSlice = createSlice({
       )
       .addCase(registerAsync.rejected, (state, action) => {
         state.status = "failed";
-        console.log(action);
         state.error = action.error.message;
       });
   },
