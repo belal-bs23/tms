@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { redirect } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import { registerAsync, selectAuthIsLoggedIn } from "./authSlice";
@@ -27,6 +27,7 @@ interface FormInputs {
 
 function Signup() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const isLoggedIn = useAppSelector(selectAuthIsLoggedIn);
   const {
     register,
@@ -104,7 +105,11 @@ function Signup() {
 
         <div className="d-flex flex-row align-items-center mt-3">
           Already have an account?{" "}
-          <Button href={ROUTES.SIGNIN} className="btn-sm" variant="link">
+          <Button
+            onClick={() => navigate(`${ROUTES.AUTH}/${ROUTES.SIGNIN}`)}
+            className="btn-sm"
+            variant="link"
+          >
             Signin
           </Button>
         </div>

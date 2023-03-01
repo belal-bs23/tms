@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { ROUTES } from "../../routes/routes";
+import { useNavigate } from "react-router-dom";
 
 const validationSchema = Yup.object({
   email: Yup.string().required("Email is required").email(),
@@ -20,6 +21,7 @@ interface FormInputs {
 
 function Signin() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -72,7 +74,11 @@ function Signin() {
 
         <div className="d-flex flex-row align-items-center mt-3">
           Do not have an account ?{" "}
-          <Button href={ROUTES.SIGNUP} className="btn-sm" variant="link">
+          <Button
+            onClick={() => navigate(`${ROUTES.AUTH}/${ROUTES.SIGNUP}`)}
+            className="btn-sm"
+            variant="link"
+          >
             SignUp
           </Button>
         </div>

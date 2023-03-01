@@ -1,8 +1,10 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
+import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../routes/routes";
 
 function HomePublic() {
+  const navigate = useNavigate();
   return (
     <div
       className="justify-content-center align-items-center text-center"
@@ -25,7 +27,7 @@ function HomePublic() {
             // margin: "auto",
             marginBottom: "10px",
           }}
-          href={`${ROUTES.AUTH}/${ROUTES.SIGNIN}`}
+          onClick={() => navigate(`${ROUTES.AUTH}/${ROUTES.SIGNIN}`)}
         >
           Signin
         </Button>
@@ -33,7 +35,7 @@ function HomePublic() {
           style={{
             width: "100px",
           }}
-          href={`${ROUTES.AUTH}/${ROUTES.SIGNUP}`}
+          onClick={() => navigate(`${ROUTES.AUTH}/${ROUTES.SIGNUP}`)}
         >
           Signup
         </Button>

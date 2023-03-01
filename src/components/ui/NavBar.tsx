@@ -3,16 +3,17 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Nav, Navbar, Container, Button } from "react-bootstrap";
 import { ROUTES } from "../../routes/routes";
 import logo from "../../assets/images/logo.png";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
-import { logoutAuth } from "../../features/auth/authSlice";
+import { logoutAuth, selectAuthUser } from "../../features/auth/authSlice";
 
 function NavBar() {
   const dispatch = useAppDispatch();
+  const user = useAppSelector(selectAuthUser);
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [activeKey] = useState(() => {
+  const [activeKey, setActiveKey] = useState(() => {
     let tabName = "home";
     if (location.pathname.startsWith(ROUTES.TASKS)) {
       tabName = "tasks";
@@ -22,8 +23,18 @@ function NavBar() {
 
     return tabName;
   });
-  const user = {
-    name: "Belal Hossain",
+
+  const handleSelect = (
+    eventKey: string | null,
+    e: React.SyntheticEvent<unknown>
+  ) => {
+    if (eventKey === "home") {
+      setActiveKey("home");
+    } else if (eventKey === "tasks") {
+      setActiveKey("tasks");
+    } else if (eventKey === "members") {
+      setActiveKey("members");
+    }
   };
 
   const onClickLogout = () => {
@@ -42,7 +53,7 @@ function NavBar() {
             </span>
           </Navbar.Brand>
           <Navbar.Toggle />
-          <Container className=" ">
+          <Container>
             <Nav className="justify-content-end d-flex flex-row align-items-center">
               <Nav.Item>{user.name}</Nav.Item>
               <Nav.Item>
@@ -56,21 +67,27 @@ function NavBar() {
               </Nav.Item>
             </Nav>
             <Navbar.Collapse className="justify-content-end">
-              <Nav>
+              <Nav onSelect={handleSelect} activeKey={activeKey}>
                 <Nav.Item>
-                  <Nav.Link active={activeKey === "home"} href={ROUTES.HOME}>
+                  <Nav.Link
+                    onClick={() => navigate(ROUTES.HOME)}
+                    eventKey="home"
+                  >
                     Home
                   </Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                  <Nav.Link active={activeKey === "tasks"} href={ROUTES.TASKS}>
+                  <Nav.Link
+                    onClick={() => navigate(ROUTES.TASKS)}
+                    eventKey="tasks"
+                  >
                     Tasks
                   </Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
                   <Nav.Link
-                    active={activeKey === "members"}
-                    href={ROUTES.MEMBERS}
+                    onClick={() => navigate(ROUTES.MEMBERS)}
+                    eventKey="members"
                   >
                     Members
                   </Nav.Link>
