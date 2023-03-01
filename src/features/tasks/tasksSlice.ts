@@ -7,8 +7,9 @@ import {
 import { RootState, AppThunk } from "../../app/store";
 import { addNewTask, fetchTasks, updateTask, deleteTask } from "./tasksAPI";
 import type { AddNewTaskData, UpdateTaskData } from "./tasksAPI";
+import { privateAxios } from "../../app/axios";
 
-type Task = {
+export type Task = {
   id: number;
   title: string;
   description: string;
@@ -57,7 +58,7 @@ export const fetchTasksAsync = createAsyncThunk(
   "tasks/fetchTasks",
   async () => {
     const response = await fetchTasks();
-    return response.data;
+    return response.tasks;
   }
 );
 
@@ -65,7 +66,7 @@ export const addNewTaskAsync = createAsyncThunk(
   "tasks/addNewTask",
   async (data: AddNewTaskData) => {
     const response = await addNewTask(data);
-    return response.data;
+    return response;
   }
 );
 
@@ -74,7 +75,7 @@ export const updateTaskAsync = createAsyncThunk(
   async (param: { id: number; data: UpdateTaskData }) => {
     const { id, data } = param;
     const response = await updateTask(id, data);
-    return response.data;
+    return response;
   }
 );
 

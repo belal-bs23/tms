@@ -1,6 +1,7 @@
 import axios from "axios";
 import { API_BASE_URL } from "./config";
-
+import { logoutAndResetStore } from "../features/auth/authSlice";
+import { store } from "./store";
 export const publicAxios = axios.create({ baseURL: API_BASE_URL });
 export const privateAxios = axios.create({ baseURL: API_BASE_URL });
 
@@ -13,8 +14,8 @@ privateAxios.interceptors.response.use(
 
     if (isInvalidToken) {
       // Logout
-      // refreshToken();
-      console.error("isInvalidToken");
+      store.dispatch(logoutAndResetStore());
+      console.log("isInvalidToken", isInvalidToken);
     }
 
     return Promise.reject(error);

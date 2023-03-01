@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Nav, Navbar, Container, Button } from "react-bootstrap";
 import { ROUTES } from "../../routes/routes";
@@ -28,11 +28,11 @@ function NavBar() {
     eventKey: string | null,
     e: React.SyntheticEvent<unknown>
   ) => {
-    if (eventKey === "home") {
+    if (activeKey !== eventKey && eventKey === "home") {
       setActiveKey("home");
-    } else if (eventKey === "tasks") {
+    } else if (activeKey !== eventKey && eventKey === "tasks") {
       setActiveKey("tasks");
-    } else if (eventKey === "members") {
+    } else if (activeKey !== eventKey && eventKey === "members") {
       setActiveKey("members");
     }
   };
@@ -41,6 +41,22 @@ function NavBar() {
     dispatch(logoutAuth());
     navigate(ROUTES.HOME);
   };
+
+  useEffect(() => {
+    if (activeKey !== "home" && location.pathname === ROUTES.HOME) {
+      setActiveKey("home");
+    } else if (
+      activeKey !== "tasks" &&
+      location.pathname.startsWith(ROUTES.TASKS)
+    ) {
+      setActiveKey("tasks");
+    } else if (
+      activeKey !== "members" &&
+      location.pathname.startsWith(ROUTES.MEMBERS)
+    ) {
+      setActiveKey("members");
+    }
+  }, [location.pathname, activeKey]);
 
   return (
     <div>

@@ -28,7 +28,6 @@ export const fetchTasks = async () => {
       "Content-Type": "application/json",
     },
   });
-
   return response.data;
 };
 

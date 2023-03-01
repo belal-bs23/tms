@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState, AppThunk } from "../../app/store";
 import { login, register, type LoginData, type RegisterData } from "./authAPI";
+import { resetTasks } from "../tasks/tasksSlice";
+import { resetMembers } from "../members/membersSlice";
+import { privateAxios } from "../../app/axios";
 
 type LoginSuccessPayload = {
   token: string;
@@ -82,6 +85,10 @@ export const authSlice = createSlice({
 
       state.status = "idle";
       state.error = null;
+
+      privateAxios.defaults.headers.common = {
+        Authorization: ``,
+      };
     },
   },
   extraReducers: (builder) => {
@@ -99,6 +106,9 @@ export const authSlice = createSlice({
 
           state.status = "idle";
           state.error = null;
+          privateAxios.defaults.headers.common = {
+            Authorization: `Bearer ${action.payload.token}`,
+          };
         }
       )
       .addCase(loginAsync.rejected, (state, action) => {
@@ -139,8 +149,8 @@ export const { resetAuthState, logoutAuth } = authSlice.actions;
 export const logoutAndResetStore =
   (): AppThunk => async (dispatch, getState) => {
     dispatch(logoutAuth());
-    // dispatch(resetTasks());
-    // dispatch(resetMembers());
+    dispatch(resetTasks());
+    dispatch(resetMembers());
   };
 
 export default authSlice.reducer;

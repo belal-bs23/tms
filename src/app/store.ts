@@ -15,7 +15,7 @@ const rootReducer = combineReducers({
     {
       key: "auth",
       storage: storage,
-      blacklist: ["status", "error", "isLoggedIn", "token"],
+      blacklist: ["status", "error"],
     },
     authReducer
   ),
