@@ -12,10 +12,12 @@ import TasksLayout from "../features/tasks/TasksLayout";
 import Tasks from "../features/tasks/Tasks";
 import TaskDetail from "../features/tasks/TaskDetail";
 import AddTask from "../features/tasks/AddTask";
+import EditTask from "../features/tasks/EditTask";
 import MembersLayout from "../features/members/MembersLayout";
 import Members from "../features/members/Members";
 import MemberDetail from "../features/members/MemberDetail";
 import AddMember from "../features/members/AddMember";
+import EditMember from "../features/members/EditMember";
 
 function RootRouter() {
   return (
@@ -27,11 +29,16 @@ function RootRouter() {
             <Route index element={<Tasks />} />
             <Route path={ROUTES.ADD_TASK} element={<AddTask />} />
             <Route path=":id" element={<TaskDetail />} />
+            <Route path={`:id/${ROUTES.EDIT_TASK}`} element={<EditTask />} />
           </Route>
           <Route path={ROUTES.MEMBERS} element={<MembersLayout />}>
             <Route index element={<Members />} />
             <Route path={ROUTES.ADD_MEMBER} element={<AddMember />} />
             <Route path=":id" element={<MemberDetail />} />
+            <Route
+              path={`:id/${ROUTES.EDIT_MEMBER}`}
+              element={<EditMember />}
+            />
           </Route>
           <Route path={ROUTES.AUTH} element={<PublicLayout />}>
             <Route index element={<HomePublic />} />

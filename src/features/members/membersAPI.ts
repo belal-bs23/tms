@@ -3,9 +3,6 @@ import { API_URL_MEMBERS } from "../../app/config";
 
 export type AddNewMemberData = {
   name: string;
-  createdAt: string;
-  updatedAt: string;
-  userId: number;
 };
 
 export type UpdateMemberData = {

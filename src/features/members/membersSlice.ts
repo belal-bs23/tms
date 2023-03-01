@@ -13,7 +13,7 @@ import {
 } from "./membersAPI";
 import type { AddNewMemberData, UpdateMemberData } from "./membersAPI";
 
-type Member = {
+export type Member = {
   id: number;
   name: string;
   createdAt: string;
@@ -60,7 +60,7 @@ export const fetchMembersAsync = createAsyncThunk(
   "members/fetchMembers",
   async () => {
     const response = await fetchMembers();
-    return response.data;
+    return response.members;
   }
 );
 

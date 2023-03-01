@@ -1,8 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { redirect, useNavigate } from "react-router-dom";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Spinner } from "react-bootstrap";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import { registerAsync, selectAuthIsLoggedIn } from "./authSlice";
+import {
+  registerAsync,
+  selectAuthIsLoggedIn,
+  resetAuthState,
+  selectAuthStatus,
+  selectAuthError,
+} from "./authSlice";
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -29,16 +35,48 @@ function Signup() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const isLoggedIn = useAppSelector(selectAuthIsLoggedIn);
+  const authStatus = useAppSelector(selectAuthStatus);
+  const authErrors = useAppSelector(selectAuthError);
+
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValidating },
   } = useForm<FormInputs>({
     resolver: yupResolver(validationSchema),
   });
   const onSubmit = (data: FormInputs) => {
     dispatch(registerAsync(data));
   };
+
+  useEffect(() => {
+    dispatch(resetAuthState());
+    setErrorMessage("");
+  }, []);
+
+  useEffect(() => {
+    if (authStatus === "loading") {
+      setErrorMessage("");
+      setLoading(true);
+    } else if (authStatus === "succeeded") {
+      setLoading(false);
+      dispatch(resetAuthState());
+    } else if (authStatus === "failed") {
+      setLoading(false);
+      setErrorMessage(authErrors);
+      dispatch(resetAuthState());
+    }
+  }, [authStatus]);
+
+  useEffect(() => {
+    if (errorMessage && isValidating) {
+      setErrorMessage("");
+      if (authErrors) dispatch(resetAuthState());
+    }
+  }, [isValidating, errorMessage, authErrors]);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -53,6 +91,7 @@ function Signup() {
         width: "100%",
       }}
     >
+      {loading && <Spinner />}
       <Form onSubmit={handleSubmit(onSubmit)}>
         <h2>Signup Form</h2>
         <Form.Group className="mb-3" controlId="name">
@@ -99,6 +138,11 @@ function Signup() {
             {errors.password2?.message}
           </Form.Text>
         </Form.Group>
+
+        <div>
+          <p className="text-danger">{errorMessage}</p>
+        </div>
+
         <Button variant="primary" type="submit">
           Submit
         </Button>

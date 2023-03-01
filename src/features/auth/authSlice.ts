@@ -29,7 +29,7 @@ export interface AuthState {
   };
   isLoggedIn: boolean;
 
-  status: "idle" | "loading" | "failed";
+  status: "idle" | "loading" | "failed" | "succeeded";
   error: any;
 }
 
@@ -104,7 +104,7 @@ export const authSlice = createSlice({
           state.user = action.payload.user;
           state.isLoggedIn = true;
 
-          state.status = "idle";
+          state.status = "succeeded";
           state.error = null;
           privateAxios.defaults.headers.common = {
             Authorization: `Bearer ${action.payload.token}`,
@@ -126,12 +126,13 @@ export const authSlice = createSlice({
           state.user = action.payload.user;
           state.isLoggedIn = true;
 
-          state.status = "idle";
+          state.status = "succeeded";
           state.error = null;
         }
       )
       .addCase(registerAsync.rejected, (state, action) => {
         state.status = "failed";
+        console.log(action);
         state.error = action.error.message;
       });
   },

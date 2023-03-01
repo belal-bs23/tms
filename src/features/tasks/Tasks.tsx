@@ -6,8 +6,50 @@ import {
   selectAllTasks,
   selectTasksRequiredReload,
 } from "./tasksSlice";
+import { type Task } from "./tasksSlice";
 import { ROUTES } from "../../routes/routes";
 import { useLocation, useNavigate } from "react-router-dom";
+
+const TaskItem: React.FC<{ task: Task; index: number }> = ({ task, index }) => {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  return (
+    <li
+      key={index}
+      className="d-flex justify-content-start"
+      style={{
+        width: "100%",
+      }}
+    >
+      <div
+        className="d-flex justify-content-between align-items-center"
+        style={{
+          width: "100%",
+        }}
+      >
+        <div className="d-flex align-items-center">
+          <span>{index + 1}.</span>
+          <Button
+            variant="link"
+            onClick={() => navigate(`${pathname}/${task.id}`)}
+          >
+            {task.title}
+          </Button>
+        </div>
+        {task?.Member && (
+          <div>
+            <Button
+              variant="link"
+              onClick={() => navigate(`${ROUTES.MEMBERS}/${task.memberId}`)}
+            >
+              {task.Member.name}
+            </Button>
+          </div>
+        )}
+      </div>
+    </li>
+  );
+};
 
 function Tasks() {
   const dispatch = useAppDispatch();
@@ -21,6 +63,10 @@ function Tasks() {
       dispatch(fetchTasksAsync());
     }
   }, [tasksRequiredReload, dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchTasksAsync());
+  }, []);
 
   return (
     <div>
@@ -42,23 +88,17 @@ function Tasks() {
             Add new
           </Button>
         </div>
-        {/* <div className="mx-5">
-          <Button
-            onClick={() => {
-              dispatch(fetchTasksAsync());
-            }}
-            className="btn-sm"
-            variant="secondary"
-          >
-            Refresh
-          </Button>
-        </div> */}
       </div>
-      <div>
+      <div
+        style={{
+          width: "50%",
+        }}
+      >
         <ul>
           {tasks &&
             tasks.map(
-              (task, index) => task && <li key={index}>{task.title}</li>
+              (task, index) =>
+                task && <TaskItem key={index} task={task} index={index} />
             )}
         </ul>
       </div>

@@ -7,13 +7,21 @@ import {
 import { RootState, AppThunk } from "../../app/store";
 import { addNewTask, fetchTasks, updateTask, deleteTask } from "./tasksAPI";
 import type { AddNewTaskData, UpdateTaskData } from "./tasksAPI";
-import { privateAxios } from "../../app/axios";
+
+export type Member = {
+  id: number;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  userId: number;
+};
 
 export type Task = {
   id: number;
   title: string;
   description: string;
   memberId?: number;
+  Member?: Member;
   userId: number;
   createdAt: string;
   updatedAt: string;

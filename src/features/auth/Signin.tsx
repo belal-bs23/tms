@@ -1,7 +1,12 @@
-import React from "react";
-import { Button, Form } from "react-bootstrap";
-import { useAppDispatch } from "../../app/hooks";
-import { loginAsync } from "./authSlice";
+import React, { useEffect, useState } from "react";
+import { Button, Form, Spinner } from "react-bootstrap";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import {
+  loginAsync,
+  resetAuthState,
+  selectAuthError,
+  selectAuthStatus,
+} from "./authSlice";
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -22,17 +27,48 @@ interface FormInputs {
 function Signin() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const authStatus = useAppSelector(selectAuthStatus);
+  const authErrors = useAppSelector(selectAuthError);
+
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValidating },
   } = useForm<FormInputs>({
     resolver: yupResolver(validationSchema),
   });
   const onSubmit = (data: FormInputs) => {
     dispatch(loginAsync(data));
   };
+
+  useEffect(() => {
+    dispatch(resetAuthState());
+    setErrorMessage("");
+  }, []);
+
+  useEffect(() => {
+    if (authStatus === "loading") {
+      setErrorMessage("");
+      setLoading(true);
+    } else if (authStatus === "succeeded") {
+      setLoading(false);
+      dispatch(resetAuthState());
+    } else if (authStatus === "failed") {
+      setLoading(false);
+      setErrorMessage("Invalid credential");
+      dispatch(resetAuthState());
+    }
+  }, [authStatus]);
+
+  useEffect(() => {
+    if (errorMessage && isValidating) {
+      setErrorMessage("");
+      if (authErrors) dispatch(resetAuthState());
+    }
+  }, [isValidating, errorMessage, authErrors]);
 
   return (
     <div
@@ -41,6 +77,7 @@ function Signin() {
         width: "100%",
       }}
     >
+      {loading && <Spinner />}
       <Form onSubmit={handleSubmit(onSubmit)}>
         <h2>Signin Form</h2>
 
@@ -67,6 +104,10 @@ function Signin() {
             {errors.password?.message}
           </Form.Text>
         </Form.Group>
+
+        <div>
+          <p className="text-danger">{errorMessage}</p>
+        </div>
 
         <Button variant="primary" type="submit">
           Submit
