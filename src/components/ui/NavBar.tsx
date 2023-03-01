@@ -5,7 +5,10 @@ import { ROUTES } from "../../routes/routes";
 import logo from "../../assets/images/logo.png";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
-import { logoutAuth, selectAuthUser } from "../../features/auth/authSlice";
+import {
+  logoutAndResetStore,
+  selectAuthUser,
+} from "../../features/auth/authSlice";
 
 function NavBar() {
   const dispatch = useAppDispatch();
@@ -38,7 +41,7 @@ function NavBar() {
   };
 
   const onClickLogout = () => {
-    dispatch(logoutAuth());
+    dispatch(logoutAndResetStore());
     navigate(ROUTES.HOME);
   };
 
