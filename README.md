@@ -1,12 +1,46 @@
-# Getting Started with Create React App
+# Task Management System - TMS
+
+React Web App for Task Management System (**TMS**).
+
+**Live** frontend webapp at [https://tms-belal.netlify.app/](https://tms-belal.netlify.app/)
+
+## Instructions to Getting Started
+
+To use successfully run this react-native app, you also need the rest-api up and running in development server. The required repository and it's instruction can be found in link ([https://github.com/belal-bh/tms-api](https://github.com/belal-bh/tms-api)). Follow the instruction there and come back here again.
+
+Clone this repository:
+
+```
+git clone git@github.com:belal-bh/react-native-tms.git
+```
+
+Then:
+
+```shell
+# go to the projects root directory and run
+
+yarn start
+```
+
+## See Live With Local Backend API
+
+This frontend (this repository) web app has been deployed to **Netlify**. You can check it out at [https://tms-belal.netlify.app/](https://tms-belal.netlify.app/). But the backend is not deployed yet. So this app will not work properly without backend API.
+
+You can use ([https://github.com/belal-bh/tms-api](https://github.com/belal-bh/tms-api)) Backend App by running it locally (Read the [doc](https://github.com/belal-bh/tms-api#readme)) and this API will be used as Backend API of the deployed fronted app [https://tms-belal.netlify.app/](https://tms-belal.netlify.app/)!
+
+## Welcome
+
+Happy coding :)
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) TS template.
 
-## Available Scripts
+### Available Scripts
 
 In the project directory, you can run:
 
-### `yarn start`
+#### `yarn start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -14,12 +48,12 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `yarn test`
+#### `yarn test`
 
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `yarn build`
+#### `yarn build`
 
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
@@ -29,7 +63,7 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `yarn eject`
+#### `yarn eject`
 
 **Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
@@ -39,7 +73,7 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+### Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
